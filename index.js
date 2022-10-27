@@ -12,7 +12,6 @@ const port = 3000;
 app.use(express.json());
 
 const users = [];
-
 const setUsersInfo = (users) => {
 
   return (req, res, next) => {
