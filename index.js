@@ -21,27 +21,29 @@ const setUsersInfo = (users) => {
   };
 };
 
+app.use(setUsersInfo(users));
+
 app.get("/", (req, res) => {
 
   return res.send("Hello World!");
 });
 
-app.get("/users", setUsersInfo(users), CheckIfUsersIsEmpty, (req, res) => {
+app.get("/users", CheckIfUsersIsEmpty, (req, res) => {
 
   return res.status(200).json(req.requestUsersInfo);
 });
 
-app.get("/users/:userId", setUsersInfo(users), FindUserValidator, (req, res) => {
+app.get("/users/:userId", FindUserValidator, (req, res) => {
   const userId = req.params.userId;
   const findUser = users.find((user) => user.id === parseInt(userId));
 
   return res.status(200).json(findUser);
 })
 
-app.post("/users", setUsersInfo(users), CheckIfValidBodyEmail, CheckIfEmailExist, CreateUser);
+app.post("/users", CheckIfValidBodyEmail, CheckIfEmailExist, CreateUser);
 
-app.put("/users/:userId", setUsersInfo(users), FindUserValidator, CheckIfValidQueryEmail, (req, res) => {
-  const {email} = req.query;
+app.put("/users/:userId", FindUserValidator, CheckIfValidBodyEmail, (req, res) => {
+  const {email} = req.body;
   const userId = req.params.userId;
   const findUser = users.find((user) => user.id === parseInt(userId));
 
